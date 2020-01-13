@@ -5,6 +5,8 @@
  */
 package pe.uni.proysuma.view;
 
+import pe.uni.proysuma.service.SumaService;
+
 /**
  *
  * @author Alumno
@@ -154,9 +156,15 @@ public class SumaView extends javax.swing.JFrame {
 
     btnProcesar.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
     btnProcesar.setText("Procesar");
+    btnProcesar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnProcesarActionPerformed(evt);
+      }
+    });
 
     btnResetear.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
     btnResetear.setText("Resetear");
+    btnResetear.setEnabled(false);
 
     btnSalir.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
     btnSalir.setText("Salir");
@@ -223,6 +231,24 @@ public class SumaView extends javax.swing.JFrame {
   private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
     System.exit(0);
   }//GEN-LAST:event_btnSalirActionPerformed
+
+  private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
+    // Entorno
+		btnProcesar.setEnabled(false);
+		btnResetear.setEnabled(true);
+		// Variables
+		int n1, n2, suma;
+		// Datos
+		n1 = Integer.parseInt(txtNum1.getText());
+		n2 = Integer.parseInt(txtNum2.getText());
+		// Proceso
+		SumaService service = new SumaService();
+		suma = service.sumar(n1, n2);
+		// Reporte
+		txtRepoNum1.setText("" + n1);
+		txtRepoNum2.setText("" + n2);
+		txtRepoSuma.setText("" + suma);
+  }//GEN-LAST:event_btnProcesarActionPerformed
 
 	/**
 	 * @param args the command line arguments
