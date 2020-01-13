@@ -10,6 +10,7 @@
 - Youtube: https://www.youtube.com/watch?v=EKlwF12-l9Y&list=PLIRq7nByT7aRuBgD4UVRjrcUZFM8Fkbut
 - Página: http://gcoronelc.blogspot.com/p/java.html
 - Código fuente: https://goo.gl/GRaOQg
+- Grupo de WS: https://chat.whatsapp.com/H6BBebNDZHEAqAk6gTU5ZS
 
 # DOCENTE
 
