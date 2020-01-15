@@ -7,7 +7,7 @@
 7.-  Patrón Inyección de Dependencias
 4.-  Manejo de documentos XML	 
 5.-  Manejo de Datos en Formato JSON 
-8.-  Expresiones regulares
+8.-  Expresiones regulares (Salvador y Aranda)
 9.-  Patrón MVC    (Aguirre, Luchine)
 10.- Patrón facade (Huamani, Vilca)
 

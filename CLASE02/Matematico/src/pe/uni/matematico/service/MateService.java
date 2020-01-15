@@ -3,8 +3,15 @@ package pe.uni.matematico.service;
 public class MateService {
 
 	public long factorial(int n) {
-
-		return 0;
+		// Variables
+		long fact;
+		// Proceso
+		fact = 1;
+		while(n > 1){
+			fact *= n--;
+		}
+		// Reporte
+		return fact;
 	}
 
 	public int mcd(int n1, int n2) {
