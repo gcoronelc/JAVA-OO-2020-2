@@ -22,7 +22,6 @@ public class Prueba01 {
 		System.out.println("Menor nota: " + dto.getMenorNota());
 		System.out.println("Promedio: " + dto.getPromedio());
 		System.out.println("Condición: " + dto.getCondicion());
-
 	}
 
 }
