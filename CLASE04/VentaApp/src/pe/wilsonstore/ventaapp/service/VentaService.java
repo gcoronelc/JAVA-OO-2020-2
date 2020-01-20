@@ -60,4 +60,30 @@ public class VentaService {
 		// Reporte
 		return ventas;
 	}
+	
+	public List<VentaDto> getResumen1(String categoria){
+		// Variables
+		List<VentaDto> resumen = new ArrayList<>();
+		// Datos
+		List<ProductoDto> listaProd = getProductos(categoria);
+		for (ProductoDto dto : listaProd) {
+			VentaDto venta = new VentaDto("", dto.getProducto(), dto.getPrecio(), 0, 0);
+			resumen.add(venta);
+		}
+		// Proceso
+		for(VentaDto venta: Data.VENTAS){
+			if(!categoria.equals(venta.getCategoria())){
+				continue;
+			}
+			for(VentaDto vtaResumen: resumen){
+				if(vtaResumen.getProducto().equals(venta.getProducto())){
+					vtaResumen.setCantidad(vtaResumen.getCantidad() + venta.getCantidad());
+					vtaResumen.setImporte(vtaResumen.getImporte()+ venta.getImporte());					
+					break;
+				}
+			}
+		}
+		// Reporte
+		return resumen;
+	}
 }

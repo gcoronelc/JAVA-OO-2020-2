@@ -34,6 +34,10 @@ public class VentaController {
 		return ventaService.getVentas(categoria);
 	}
 
+	public List<VentaDto> traerResumen1(String categoria) {
+		return ventaService.getResumen1(categoria);
+	}
+
 	
 	
 	

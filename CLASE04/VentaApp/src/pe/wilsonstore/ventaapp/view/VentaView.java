@@ -1,5 +1,6 @@
 package pe.wilsonstore.ventaapp.view;
 
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -173,6 +174,11 @@ public class VentaView extends javax.swing.JFrame {
     jButton4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
     jButton4.setForeground(new java.awt.Color(255, 255, 255));
     jButton4.setText("Resumen 1");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton4ActionPerformed(evt);
+      }
+    });
 
     jButton5.setBackground(new java.awt.Color(51, 51, 51));
     jButton5.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -301,34 +307,39 @@ public class VentaView extends javax.swing.JFrame {
   }//GEN-LAST:event_btnSalirActionPerformed
 
   private void btnProcesarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcesarActionPerformed
-    // Variables
-		String categoria;
-		ProductoDto productoDto;
-		int cantidad;
-		VentaDto ventaDto;
-		// Datos
-		categoria = cboCategoria.getSelectedItem().toString();
-		productoDto = (ProductoDto) cboProducto.getSelectedItem();
-		cantidad = Integer.parseInt(txtCantidad.getText());
-		// Proceso
-		ventaDto = new VentaDto();
-		ventaDto.setCategoria(categoria);
-		ventaDto.setProducto(productoDto.getProducto());
-		ventaDto.setPrecio(productoDto.getPrecio());
-		ventaDto.setCantidad(cantidad);
-		controller.procesarVenta(ventaDto);
-		// Reporte
-		JOptionPane.showMessageDialog(rootPane, "Proceso ok.",
-			"VENTA",JOptionPane.INFORMATION_MESSAGE);
-		// Limpiar formulario
-		estoyOcupado = true;
-		cboCategoria.setSelectedIndex(-1);
-		cboProducto.removeAllItems();
-		txtPrecio.setText("");
-		txtCantidad.setText("");
-		cboCategoria.requestFocus();
-		estoyOcupado = false;
-		
+		try {
+			// Variables
+			String categoria;
+			ProductoDto productoDto;
+			int cantidad;
+			VentaDto ventaDto;
+			// Datos
+			categoria = cboCategoria.getSelectedItem().toString();
+			productoDto = (ProductoDto) cboProducto.getSelectedItem();
+			cantidad = Integer.parseInt(txtCantidad.getText());
+			// Proceso
+			ventaDto = new VentaDto();
+			ventaDto.setCategoria(categoria);
+			ventaDto.setProducto(productoDto.getProducto());
+			ventaDto.setPrecio(productoDto.getPrecio());
+			ventaDto.setCantidad(cantidad);
+			controller.procesarVenta(ventaDto);
+			// Reporte
+			JOptionPane.showMessageDialog(rootPane, "Proceso ok.",
+				"VENTA", JOptionPane.INFORMATION_MESSAGE);
+			// Limpiar formulario
+			estoyOcupado = true;
+			cboCategoria.setSelectedIndex(-1);
+			cboProducto.removeAllItems();
+			txtPrecio.setText("");
+			txtCantidad.setText("");
+			cboCategoria.requestFocus();
+			estoyOcupado = false;
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(rootPane, 
+							"Datos incorrectos.","ERROR",
+							JOptionPane.ERROR_MESSAGE);
+		} 		
   }//GEN-LAST:event_btnProcesarActionPerformed
 
   private void cboProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboProductoActionPerformed
@@ -350,6 +361,11 @@ public class VentaView extends javax.swing.JFrame {
     JDialog dialogo = new ReporteVentas(this, true);
 		dialogo.setVisible(true);
   }//GEN-LAST:event_jButton3ActionPerformed
+
+  private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    JDialog dialogo = new Resumen1View(this, true);
+		dialogo.setVisible(true);
+  }//GEN-LAST:event_jButton4ActionPerformed
 
 	/**
 	 * @param args the command line arguments
