@@ -1,7 +1,9 @@
 package pe.wilsonstore.ventaapp.view;
 
-import pe.wilsonstore.ventaapp.VentaApp;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import pe.wilsonstore.ventaapp.controller.VentaController;
+import pe.wilsonstore.ventaapp.dto.VentaDto;
 
 /**
  *
@@ -11,6 +13,7 @@ import pe.wilsonstore.ventaapp.controller.VentaController;
 public class ReporteVentas extends javax.swing.JDialog {
 
 	private VentaController controller;
+	private List<VentaDto>  ventas = null;
 
 	/**
 	 * Creates new form ReporteVentas
@@ -42,10 +45,10 @@ public class ReporteVentas extends javax.swing.JDialog {
     jPanel1 = new javax.swing.JPanel();
     jLabel1 = new javax.swing.JLabel();
     cboCategoria = new javax.swing.JComboBox<>();
-    jButton1 = new javax.swing.JButton();
+    btnConsultar = new javax.swing.JButton();
     jPanel2 = new javax.swing.JPanel();
     jScrollPane1 = new javax.swing.JScrollPane();
-    jTable1 = new javax.swing.JTable();
+    tblRepo = new javax.swing.JTable();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle("REPORTE DE VENTAS");
@@ -58,11 +61,16 @@ public class ReporteVentas extends javax.swing.JDialog {
     cboCategoria.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
     cboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-    jButton1.setBackground(new java.awt.Color(0, 0, 204));
-    jButton1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-    jButton1.setForeground(new java.awt.Color(204, 204, 204));
-    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pe/wilsonstore/ventaapp/imagenes/buscar.png"))); // NOI18N
-    jButton1.setText("Consultar");
+    btnConsultar.setBackground(new java.awt.Color(0, 0, 204));
+    btnConsultar.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+    btnConsultar.setForeground(new java.awt.Color(204, 204, 204));
+    btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pe/wilsonstore/ventaapp/imagenes/buscar.png"))); // NOI18N
+    btnConsultar.setText("Consultar");
+    btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnConsultarActionPerformed(evt);
+      }
+    });
 
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
@@ -74,7 +82,7 @@ public class ReporteVentas extends javax.swing.JDialog {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
-        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     jPanel1Layout.setVerticalGroup(
@@ -84,13 +92,13 @@ public class ReporteVentas extends javax.swing.JDialog {
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REPORTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Dialog", 1, 18), new java.awt.Color(0, 0, 204))); // NOI18N
 
-    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+    tblRepo.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
         {null, null, null, null, null},
         {null, null, null, null, null},
@@ -116,7 +124,7 @@ public class ReporteVentas extends javax.swing.JDialog {
         return canEdit [columnIndex];
       }
     });
-    jScrollPane1.setViewportView(jTable1);
+    jScrollPane1.setViewportView(tblRepo);
 
     javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
     jPanel2.setLayout(jPanel2Layout);
@@ -158,6 +166,27 @@ public class ReporteVentas extends javax.swing.JDialog {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+  private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+    // Proceso
+		String categoria = cboCategoria.getSelectedItem().toString();
+		ventas = controller.traerVentas(categoria);
+		// Reporte
+		DefaultTableModel tabla;
+		tabla = (DefaultTableModel) tblRepo.getModel();
+		tabla.setRowCount(0);
+		Object[] rowData;
+		for(VentaDto dto: ventas){
+			rowData = new Object[]{
+				dto.getCategoria(),
+				dto.getProducto(),
+				dto.getPrecio(),
+				dto.getCantidad(),
+				dto.getImporte()
+			};
+			tabla.addRow(rowData);
+		}
+  }//GEN-LAST:event_btnConsultarActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -202,13 +231,13 @@ public class ReporteVentas extends javax.swing.JDialog {
 	}
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton btnConsultar;
   private javax.swing.JComboBox<String> cboCategoria;
-  private javax.swing.JButton jButton1;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JPanel jPanel2;
   private javax.swing.JScrollPane jScrollPane1;
-  private javax.swing.JTable jTable1;
+  private javax.swing.JTable tblRepo;
   // End of variables declaration//GEN-END:variables
 
 }

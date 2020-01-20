@@ -30,6 +30,10 @@ public class VentaController {
 		ventaService.grabarVenta(ventaDto);
 	}
 
+	public List<VentaDto> traerVentas(String categoria) {
+		return ventaService.getVentas(categoria);
+	}
+
 	
 	
 	
