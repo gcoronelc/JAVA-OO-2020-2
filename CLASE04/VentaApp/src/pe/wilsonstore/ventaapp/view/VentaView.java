@@ -1,6 +1,7 @@
 package pe.wilsonstore.ventaapp.view;
 
 import java.util.List;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import pe.wilsonstore.ventaapp.controller.VentaController;
 import pe.wilsonstore.ventaapp.dto.ProductoDto;
@@ -22,6 +23,7 @@ public class VentaView extends javax.swing.JFrame {
 	 */
 	public VentaView() {
 		initComponents();
+		this.setLocationRelativeTo(null);
 		estoyOcupado = false;
 		controller = new VentaController();
 		llenarCategorias();
@@ -161,6 +163,11 @@ public class VentaView extends javax.swing.JFrame {
     jButton3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
     jButton3.setForeground(new java.awt.Color(255, 255, 255));
     jButton3.setText("Ventas");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton3ActionPerformed(evt);
+      }
+    });
 
     jButton4.setBackground(new java.awt.Color(51, 51, 51));
     jButton4.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -338,6 +345,11 @@ public class VentaView extends javax.swing.JFrame {
 		// Control
 		estoyOcupado = false;
   }//GEN-LAST:event_cboProductoActionPerformed
+
+  private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    JDialog dialogo = new ReporteVentas(this, true);
+		dialogo.setVisible(true);
+  }//GEN-LAST:event_jButton3ActionPerformed
 
 	/**
 	 * @param args the command line arguments
