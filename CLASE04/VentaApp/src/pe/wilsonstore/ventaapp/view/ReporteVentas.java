@@ -1,7 +1,16 @@
 package pe.wilsonstore.ventaapp.view;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import pe.wilsonstore.ventaapp.controller.VentaController;
 import pe.wilsonstore.ventaapp.dto.VentaDto;
 
@@ -46,6 +55,7 @@ public class ReporteVentas extends javax.swing.JDialog {
     jLabel1 = new javax.swing.JLabel();
     cboCategoria = new javax.swing.JComboBox<>();
     btnConsultar = new javax.swing.JButton();
+    btnConsultar1 = new javax.swing.JButton();
     jPanel2 = new javax.swing.JPanel();
     jScrollPane1 = new javax.swing.JScrollPane();
     tblRepo = new javax.swing.JTable();
@@ -72,6 +82,17 @@ public class ReporteVentas extends javax.swing.JDialog {
       }
     });
 
+    btnConsultar1.setBackground(new java.awt.Color(102, 204, 255));
+    btnConsultar1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+    btnConsultar1.setForeground(new java.awt.Color(0, 0, 102));
+    btnConsultar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pe/wilsonstore/ventaapp/imagenes/excel.png"))); // NOI18N
+    btnConsultar1.setText("Consultar");
+    btnConsultar1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnConsultar1ActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -83,6 +104,8 @@ public class ReporteVentas extends javax.swing.JDialog {
         .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(18, 18, 18)
         .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
+        .addComponent(btnConsultar1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     jPanel1Layout.setVerticalGroup(
@@ -92,7 +115,8 @@ public class ReporteVentas extends javax.swing.JDialog {
         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(btnConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(btnConsultar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
@@ -188,6 +212,52 @@ public class ReporteVentas extends javax.swing.JDialog {
 		}
   }//GEN-LAST:event_btnConsultarActionPerformed
 
+  private void btnConsultar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultar1ActionPerformed
+    try {
+      // Archivo destino
+      String archivo = "";
+      // Seleccionar archivo destino
+      JFileChooser fileChooser = new JFileChooser();
+      fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+      int result = fileChooser.showOpenDialog(this);
+			if(result != JFileChooser.APPROVE_OPTION){
+				return;
+			}
+			File selectedFile = fileChooser.getSelectedFile();
+			//System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+			archivo = selectedFile.getAbsolutePath();
+
+      // Proceso de crear el archivo excel
+      // Paso 1: Crear el libro
+      String plantilla = "/pe/wilsonstore/ventaapp/plantillas/ventas.xls";
+      InputStream inp = Class.class.getResourceAsStream(plantilla);
+      HSSFWorkbook objWB = new HSSFWorkbook(inp);
+      // Paso 2: Crear la hoja
+      HSSFSheet hoja = objWB.getSheetAt(0);
+      // Cargar data a la hoja
+      HSSFRow filaData = null;
+			int fila = 0;
+      for (VentaDto dto: ventas) {
+        filaData = hoja.createRow(fila);
+        filaData.createCell(0).setCellValue(dto.getCategoria());
+        filaData.createCell(1).setCellValue(dto.getProducto());
+        filaData.createCell(2).setCellValue(dto.getPrecio());
+        filaData.createCell(3).setCellValue(dto.getCantidad());
+        filaData.createCell(4).setCellValue(dto.getImporte());
+				fila++;
+      }
+      // Crear el archivo
+      File objFile = new File(archivo);
+      FileOutputStream archivoSalida = new FileOutputStream(objFile);
+      objWB.write(archivoSalida);
+      archivoSalida.close();
+      JOptionPane.showMessageDialog(this, "Proceso ejecutado correctamente.","APP",JOptionPane.INFORMATION_MESSAGE);
+    } catch (IOException ex) {
+      //ex.printStackTrace();
+      JOptionPane.showMessageDialog(this, "No se tiene permiso para crear el archivo.","APP",JOptionPane.ERROR_MESSAGE);
+    }
+  }//GEN-LAST:event_btnConsultar1ActionPerformed
+
 	/**
 	 * @param args the command line arguments
 	 */
@@ -232,6 +302,7 @@ public class ReporteVentas extends javax.swing.JDialog {
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton btnConsultar;
+  private javax.swing.JButton btnConsultar1;
   private javax.swing.JComboBox<String> cboCategoria;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JPanel jPanel1;
